@@ -3,7 +3,11 @@ import { Schema, model, ObjectId } from 'mongoose'
 const schema = new Schema({
   name: {
     type: String,
-    required: [true, '缺少票券名稱']
+    required: [true, '缺少演唱會名稱']
+  },
+  performer: {
+    type: String,
+    required: [true, '缺少表演者名稱']
   },
   originalPrice: {
     type: Number,

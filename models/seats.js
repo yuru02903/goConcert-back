@@ -10,11 +10,11 @@ const schema = new Schema({
     required: [true, '缺少區域名稱']
   },
   row: {
-    type: String,
+    type: Number,
     required: [true, '缺少排數']
   },
   seat: {
-    type: String,
+    type: Number,
     required: [true, '缺少座號']
   }
 },
