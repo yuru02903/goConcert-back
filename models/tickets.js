@@ -5,6 +5,10 @@ const schema = new Schema({
     type: String,
     required: [true, '缺少演唱會名稱']
   },
+  date: {
+    type: String,
+    required: [true, '缺少演唱會日期']
+  },
   performer: {
     type: String,
     required: [true, '缺少表演者名稱']

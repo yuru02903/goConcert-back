@@ -51,8 +51,9 @@ export const getLaunchedTickets = async (req, res) => {
       .sort({ [sortBy]: sortOrder })
       .skip((page - 1) * itemsPerPage)
       .limit(itemsPerPage === -1 ? undefined : itemsPerPage)
+      .populate('seller', 'account')
 
-    // estimatedDocumentCount() 計算總資料數
+    // countDocuments() 依照 () 內篩選計算總資料數
     const total = await tickets.countDocuments({ sell: true })
     res.status(StatusCodes.OK).json({
       success: true,
@@ -76,7 +77,6 @@ export const getMyTickets = async (req, res) => {
     const sortOrder = parseInt(req.query.sortOrder) || -1
     const itemsPerPage = parseInt(req.query.itemsPerPage) || 10
     const page = parseInt(req.query.page) || 1
-    // RegExp( 來源,'i') => 將來源表達式，且不分大小寫(i)
     const regex = new RegExp(req.query.search || '', 'i')
 
     const data = await tickets
@@ -88,9 +88,6 @@ export const getMyTickets = async (req, res) => {
           { categoryCountry: regex }
         ]
       })
-      // const text = 'a'
-      // const obj = { [text]: 1 }
-      // obj.a = 1
       .sort({ [sortBy]: sortOrder })
       .skip((page - 1) * itemsPerPage)
       .limit(itemsPerPage === -1 ? undefined : itemsPerPage)
