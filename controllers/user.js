@@ -170,7 +170,8 @@ export const getUsers = async (req, res) => {
     const data = await users
       .find({
         $or: [
-          { account: regex }
+          { account: regex },
+          { email: regex }
         ]
       })
     // const text = 'a'
