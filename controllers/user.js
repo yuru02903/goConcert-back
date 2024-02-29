@@ -158,3 +158,41 @@ export const edit = async (req, res) => {
     }
   }
 }
+
+export const getUsers = async (req, res) => {
+  try {
+    const sortBy = req.query.sortBy || 'createdAt'
+    const sortOrder = parseInt(req.query.sortOrder) || -1
+    const itemsPerPage = parseInt(req.query.itemsPerPage) || 20
+    const page = parseInt(req.query.page) || 1
+    // RegExp( 來源,'i') => 將來源表達式，且不分大小寫(i)
+    const regex = new RegExp(req.query.search || '', 'i')
+    const data = await users
+      .find({
+        $or: [
+          { account: regex }
+        ]
+      })
+    // const text = 'a'
+    // const obj = { [text]: 1 }
+    // obj.a = 1
+      .sort({ [sortBy]: sortOrder })
+      .skip((page - 1) * itemsPerPage)
+      .limit(itemsPerPage === -1 ? undefined : itemsPerPage)
+
+    const total = await users.estimatedDocumentCount()
+    res.status(StatusCodes.OK).json({
+      success: true,
+      message: '',
+      result: {
+        data, total
+      }
+    })
+  } catch (error) {
+    console.log(error)
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      success: false,
+      message: '未知錯誤'
+    })
+  }
+}
